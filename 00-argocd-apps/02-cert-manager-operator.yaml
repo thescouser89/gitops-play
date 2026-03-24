@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: 02-cert-manager-operator
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "-10" # Run this first!
@@ -12,6 +12,7 @@ spec:
     chart: cert-manager
     targetRevision: v1.15.0 # Use a specific version
     helm:
+      releaseName: cert-manager
       parameters:
         - name: crds.enabled
           value: "true" # Required for cert-manager to work
