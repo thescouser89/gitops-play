@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    # 1. The URL of the GitHub Repo
+    repoURL: 'https://github.com/helm/examples'
+    # 2. The branch, tag, or commit
+    targetRevision: main
+    # 3. The path inside the repo where Chart.yaml lives
+    path: examples/charts/hello-world
+    
+    # 4. Optional: Override values.yaml directly
+    helm:
+      valueFiles:
+        - values.yaml
+      parameters:
+        - name: replicaCount
+          value: "1"
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: devel
