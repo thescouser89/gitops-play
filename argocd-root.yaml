@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/thescouser89/argocd-play
+    repoURL: https://github.com/thescouser89/gitops-play
     targetRevision: main
     path: 00-argocd-apps/           # Path to the folder with child manifests
   destination:
