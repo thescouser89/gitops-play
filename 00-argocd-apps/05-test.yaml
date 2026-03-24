@@ -15,6 +15,7 @@ spec:
     
     # 4. Optional: Override values.yaml directly
     helm:
+      releaseName: hello-world-devel
       valueFiles:
         - values.yaml
       parameters:
