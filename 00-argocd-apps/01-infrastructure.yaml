@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-namespaces
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10" # Run this first!
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/thescouser89/argocd-play
+    path: 01-infrastructure
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+

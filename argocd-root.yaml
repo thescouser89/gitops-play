@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-root
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/thescouser89/argocd-play
+    targetRevision: main
+    path: 00-argocd-apps/           # Path to the folder with child manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd      # Child Application CRDs live in the argocd namespace
+  syncPolicy:
+    automated:
+      prune: false          # Deleting a file in /apps does notdelete the App in Argo
+      selfHeal: true
+
