@@ -11,7 +11,7 @@ spec:
     # 2. The branch, tag, or commit
     targetRevision: main
     # 3. The path inside the repo where Chart.yaml lives
-    path: examples/charts/hello-world
+    path: charts/hello-world
     
     # 4. Optional: Override values.yaml directly
     helm:
