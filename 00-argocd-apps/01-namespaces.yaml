@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cluster-namespaces
+  name: 01-setup-namespaces
   annotations:
     argocd.argoproj.io/sync-wave: "-10" # Run this first!
 spec:
