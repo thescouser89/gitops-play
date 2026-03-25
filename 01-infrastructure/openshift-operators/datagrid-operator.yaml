@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    openshift.io/cluster-monitoring: "true"
+    argocd.argoproj.io/managed-by: openshift-gitops  # needed for Openshift
+  name: datagrid
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: datagrid-operatorgroup
+  namespace: datagrid
+spec:
+  targetNamespaces:
+    - datagrid
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: datagrid-operator
+  namespace: datagrid
+spec:
+  channel: 8.4.x          # Use the channel matching your desired version
+  name: datagrid
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  installPlanApproval: Automatic
