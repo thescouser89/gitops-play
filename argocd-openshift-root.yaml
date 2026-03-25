@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 00-openshift-gitops-openshift-root
+  namespace: openshift-gitops
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/thescouser89/gitops-play
+    targetRevision: main
+    path: 00-argocd-openshift-gitops-apps/           # Path to the folder with child manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openshift-gitops      # Child Application CRDs live in the openshift-gitops namespace
+  syncPolicy:
+    automated:
+      prune: false          # Deleting a file in /apps does notdelete the App in Argo
+      selfHeal: true
+
