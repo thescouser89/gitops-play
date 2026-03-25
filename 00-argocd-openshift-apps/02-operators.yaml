@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/thescouser89/gitops-play
-    path: 01-openshift-operators
+    path: 01-infrastructure/openshift-operators
   destination:
     server: https://kubernetes.default.svc
     namespace: openshift-gitops
