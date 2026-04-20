@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-app
+  namespace: openshift-gitops
+spec:
+  project: default
+  source:
+    # 1. The URL of the GitHub Repo
+    repoURL: 'https://github.ibm.com/pnc-internal/pnc-mpp-qauseway-chart'
+    # 2. The branch, tag, or commit
+    targetRevision: main
+    # 3. The path inside the repo where Chart.yaml lives
+    path: qauseway
+    
+    # 4. Optional: Override values.yaml directly
+    helm:
+      releaseName: qauseway-devel
+      valueFiles:
+        - values.yaml
+        - values-devel.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: devel
