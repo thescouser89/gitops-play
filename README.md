@@ -38,3 +38,14 @@ argocd repo add git@github.com:your-org/your-repo.git --ssh-private-key-path ~/.
 ```
 
 The same would apply for any 'Application' yaml referring to a private Git helm chart repository
+
+# Secrets
+At some point, in between the creation of Openshift namespaces + operators, and deploying Helm charts, we need
+to deploy some secrets for the successful deployment of the Helm Charts.
+
+The secrets (perhaps loaded from external-secrets) are:
+- external-secrets 'secret-store' link to the actual external secret server
+- quay.io secret to pull images
+
+The service account of the helm application should add the quay.io secret to
+itself to give it enough permission to pull the image.
