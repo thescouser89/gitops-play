@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     # 1. The URL of the GitHub Repo
-    repoURL: 'https://github.ibm.com/pnc-internal/pnc-mpp-qauseway-chart'
+    repoURL: 'https://github.com/pnc-internal/pnc-mpp-qauseway-chart'
     # 2. The branch, tag, or commit
     targetRevision: main
     # 3. The path inside the repo where Chart.yaml lives
