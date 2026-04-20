@@ -1,4 +1,5 @@
 # Installing argocd first
+# Bootstrap for community
 Install argocd
 ```
 kubectl create namespace argocd
@@ -7,6 +8,25 @@ kubectl apply -n argocd \
     --force-conflicts \
     -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
+
+Install root argocd-application, which will load the other applications
+```
+kubectl apply -f argocd-root.yaml
+```
+
+Note that the 'Application' yamls are installed inside the **argocd** namespace.
+
+# Bootstrap for Openshift
+Installing argocd on Openshift requires a different instruction to the community.
+```
+oc apply -f argocd-openshift-operator.yaml
+```
+
+Install root argocd-application, which will load the other applications
+```
+kubectl apply -f argocd-openshift-root.yaml
+```
+Note that the 'Application' yamls are installed inside the **openshift-gitops** namespace.
 
 ## Argocd and private git repos
 ```
@@ -18,20 +38,3 @@ argocd repo add git@github.com:your-org/your-repo.git --ssh-private-key-path ~/.
 ```
 
 The same would apply for any 'Application' yaml referring to a private Git helm chart repository
-
-# Bootstrap for community
-Install root argocd-application, which will load the other applications
-```
-kubectl apply -f argocd-root.yaml
-```
-
-# Bootstrap for Openshift
-For Openshift, you can install it by running:
-```
-oc apply -f argocd-openshift-operator.yaml
-```
-
-Install root argocd-application, which will load the other applications
-```
-kubectl apply -f argocd-openshift-root.yaml
-```
