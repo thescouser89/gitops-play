@@ -22,10 +22,46 @@ spec:
   remoteWrite:
     - url: "http://vmsingle-vm-instance.default.svc:8428/api/v1/write"
   scrapeInterval: 30s
-  serviceScrapeNamespaceSelector:
-    matchLabels:
-      kubernetes.io/metadata.name: newcastle--runtime-devel
   podScrapeNamespaceSelector:
-    matchLabels:
-      kubernetes.io/metadata.name: newcastle--runtime-devel
+    matchNames:
+      # agent will only see VMPodScrape object in this namespace
+      - victoria-metrics
+    # Crucial: You still need a selector for the objects themselves
+  # {} means "select all objects within those allowed namespaces"
+  podScrapeSelector: {}
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: prometheus-annotation-mimic
+  namespace: victoria-metrics
+spec:
+  # 1. Look everywhere in the OpenShift cluster
+  namespaceSelector:
+    any: true
+
+  # 2. Select ALL pods initially (filtering happens in relabelConfigs)
+  selector: {}
+
+  podMetricsEndpoints:
+    - scheme: http
+      # 3. The "Magic" Relabeling Logic
+      relabelConfigs:
+        # Only scrape pods with prometheus.io/scrape = true
+        - sourceLabels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+          action: keep
+          regex: "true"
+
+        # Dynamically set the path from prometheus.io/path (defaults to /metrics)
+        - sourceLabels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+          action: replace
+          targetLabel: __metrics_path__
+          regex: (.+)
+
+        # Dynamically set the port from prometheus.io/port
+        - sourceLabels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+          action: replace
+          regex: ([^:]+)(?::\d+)?;(\d+)
+          replacement: $1:$2
+          targetLabel: __address__
 
